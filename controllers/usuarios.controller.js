@@ -21,8 +21,6 @@ const usuariosPut = (req = request, res = response) => {
 const usuariosPost = async (req = request, res = response) => {
   const { nombre, correo, password, rol } = req.body;
   const usuario = new Usuario({nombre, correo, password, rol});
-
-  // verificar si correo existe
   
   // Encriptar contraseña (hash)
   const salt = bcryptjs.genSaltSync();
