@@ -2,7 +2,7 @@ const { Router } = require('express');
 const { check } = require('express-validator');
 
 const {
-  validarCambios,
+  validarCampos,
   validarJWT,
   esAdminRol,
   tieneRol
@@ -30,7 +30,7 @@ router.put('/:id', [
   check('id', 'No es un ID valido').isMongoId(),
   check('id').custom(existeUsuarioPorId),
   check('rol').custom(esRolValido),
-  validarCambios
+  validarCampos
 ], usuariosPut);
 
 router.post('/', [
@@ -40,7 +40,7 @@ router.post('/', [
   check('password', 'El password debe tener mas de 6 caracteres').isLength({ min: 6 }),
   check('rol').custom(esRolValido),
   //check('rol', 'No es un rol permitido').isIn(['ADMIN_ROLE','USER_ROLE']),
-  validarCambios
+  validarCampos
 ], usuariosPost);
 
 router.delete('/:id', [
@@ -49,7 +49,7 @@ router.delete('/:id', [
   tieneRol('ADMIN_ROLE', 'VENTAS_ROLE'),
   check('id', 'No es un ID valido').isMongoId(),
   check('id').custom(existeUsuarioPorId),
-  validarCambios
+  validarCampos
 ], usuariosDelete);
 
 router.patch('/', usuariosPatch);
