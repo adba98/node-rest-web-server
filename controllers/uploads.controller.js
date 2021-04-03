@@ -1,25 +1,19 @@
-const path = require("path");
 const { request, response } = require("express");
+const { subirArchivo } = require("../helpers");
 
-const cargarArchivo = (req = request, res = response) => {
+const cargarArchivo = async (req = request, res = response) => {
   if (!req.files || Object.keys(req.files).length === 0 || !req.files.archivo) {
     return res.status(400).json({ msg: 'Ningun archivo fue cargado' });
   }
 
-  // The name of the input field (i.e. "sampleFile") is used to retrieve the uploaded file
-  const { archivo } = req.files;
-  const uploadPath = path.join(__dirname, '../uploads/', archivo.name);
+  try {
+    // const nombre = await subirArchivo(req.files, ['txt', 'md'], 'textos');
+    const nombre = await subirArchivo(req.files, undefined, 'img');
+    res.json({ nombre });
 
-  // Use the mv() method to place the file somewhere on your server
-  archivo.mv(uploadPath, (err) => {
-    if (err) return res.status(500).json({
-      msg: 'Error' + err
-    });
-
-    res.json({
-      msg: `El archivo ${uploadPath} fue cargado.`
-    });
-  });
+  } catch (error) {
+    res.status(400).json({ msg: `${error}` });
+  }
 }
 
 module.exports = {
